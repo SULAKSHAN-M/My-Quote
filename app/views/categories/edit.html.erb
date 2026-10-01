@@ -1,0 +1,18 @@
+<div class="form-page">
+  <h1>Edit Category</h1>
+  <%= form_with model: @category, class: "form-card" do |f| %>
+    <% if @category.errors.any? %>
+      <div class="error-box">
+        <ul><% @category.errors.full_messages.each do |msg| %><li><%= msg %></li><% end %></ul>
+      </div>
+    <% end %>
+    <div class="form-group">
+      <%= f.label :catname, "Category Name" %>
+      <%= f.text_field :catname, class: "form-control", required: true %>
+    </div>
+    <div class="form-actions">
+      <%= f.submit "Save Changes", class: "btn btn-primary" %>
+      <%= link_to "Cancel", categories_path, class: "btn btn-link" %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,32 @@
+<div class="page-header">
+  <h1>Philosophical Sources</h1>
+  <% if logged_in? %>
+    <%= link_to "Add New Source", new_source_path, class: "btn btn-primary" %>
+  <% end %>
+</div>
+
+<% if @sources.any? %>
+  <div class="sources-grid">
+    <% @sources.each do |source| %>
+      <div class="source-card">
+        <h3><%= link_to source.full_name, source_path(source) %></h3>
+        <p class="source-years"><%= source.life_years %></p>
+        <% if source.bio.present? %>
+          <p class="source-bio-preview"><%= truncate(source.bio, length: 120) %></p>
+        <% end %>
+        <p class="source-quote-count"><%= source.quotes.count %> quote(s)</p>
+        <div class="card-actions">
+          <%= link_to "View", source_path(source), class: "btn btn-sm" %>
+          <% if logged_in? %>
+            <%= link_to "Edit", edit_source_path(source), class: "btn btn-sm btn-secondary" %>
+            <% if admin_user? %>
+              <%= link_to "Delete", source_path(source), data: { turbo_method: :delete, turbo_confirm: "Delete this source?" }, class: "btn btn-sm btn-danger" %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <p class="empty-state">No sources added yet.</p>
+<% end %>

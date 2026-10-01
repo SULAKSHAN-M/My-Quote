@@ -1,0 +1,43 @@
+<div class="page-header">
+  <h1>My Profile</h1>
+  <div class="header-actions">
+    <%= link_to "Edit Profile", edit_profile_path, class: "btn btn-secondary" %>
+    <%= link_to "Change Password", edit_password_path, class: "btn btn-secondary" %>
+    <%= link_to "Add Quote", new_quote_path, class: "btn btn-primary" %>
+  </div>
+</div>
+
+<div class="profile-card">
+  <p><strong>Name:</strong> <%= @user.full_name %></p>
+  <p><strong>Email:</strong> <%= @user.email %></p>
+  <p><strong>Account Type:</strong> <%= @user.is_admin? ? "Administrator" : "Standard User" %></p>
+  <p><strong>Status:</strong> <span class="status-badge status-<%= @user.status.downcase %>"><%= @user.status %></span></p>
+</div>
+
+<section class="my-quotes">
+  <h2>My Quotes (<%= @quotes.count %>)</h2>
+  <% if @quotes.any? %>
+    <table class="data-table">
+      <thead>
+        <tr><th>Quote</th><th>Source</th><th>Categories</th><th>Visibility</th><th>Actions</th></tr>
+      </thead>
+      <tbody>
+        <% @quotes.each do |quote| %>
+          <tr>
+            <td class="quote-excerpt"><%= truncate(quote.qtext, length: 80) %></td>
+            <td><%= quote.source.full_name %></td>
+            <td><%= quote.categories.map(&:catname).join(", ") %></td>
+            <td><span class="visibility-badge <%= quote.ispublic? ? 'public' : 'private' %>"><%= quote.ispublic? ? "Public" : "Private" %></span></td>
+            <td class="actions">
+              <%= link_to "View", quote_path(quote), class: "btn btn-sm" %>
+              <%= link_to "Edit", edit_quote_path(quote), class: "btn btn-sm btn-secondary" %>
+              <%= link_to "Delete", quote_path(quote), data: { turbo_method: :delete, turbo_confirm: "Delete this quote?" }, class: "btn btn-sm btn-danger" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="empty-state">You haven't added any quotes yet. <%= link_to "Add your first quote!", new_quote_path %></p>
+  <% end %>
+</section>

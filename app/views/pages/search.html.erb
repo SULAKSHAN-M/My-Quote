@@ -1,0 +1,56 @@
+<div class="page-header">
+  <h1>Search Quotes by Category</h1>
+</div>
+
+<section class="search-section">
+  <%= form_tag search_path, method: :get, class: "search-form" do %>
+    <%= select_tag :category_id,
+          options_from_collection_for_select(@categories, :id, :catname, params[:category_id]),
+          prompt: "-- Select a category --", class: "form-control" %>
+    <%= submit_tag "Search", class: "btn btn-primary" %>
+  <% end %>
+</section>
+
+<% if @selected_category %>
+  <section class="search-results">
+    <h2>Quotes in: <em><%= @selected_category.catname %></em></h2>
+    <% if @quotes.any? %>
+      <% @quotes.each do |quote| %>
+        <div class="quote-card">
+          <blockquote class="quote-text">"<%= quote.qtext %>"</blockquote>
+          <div class="quote-meta">
+            <span class="quote-source">
+              &mdash; <%= quote.source.full_name %> <%= quote.source.life_years %>
+              <% if quote.qyear.present? %>(<%= quote.qyear %>)<% end %>
+            </span>
+            <span class="quote-collector">Collected by <%= quote.user.fname %></span>
+          </div>
+          <% if quote.qcom.present? %>
+            <div class="quote-comment"><em>Note: <%= quote.qcom %></em></div>
+          <% end %>
+          <div class="quote-categories">
+            <% quote.categories.each do |cat| %>
+              <span class="cat-badge"><%= cat.catname %></span>
+            <% end %>
+          </div>
+          <div class="card-footer-row">
+            <%= link_to "View", quote_path(quote), class: "btn btn-sm" %>
+            <div class="card-meta-right">
+              <span class="card-meta-item">
+                <strong>Date Added:</strong> <%= quote.created_at.strftime("%d %B %Y") %>
+              </span>
+              <span class="card-meta-item">
+                <strong>Visibility:</strong>
+                <span class="visibility-badge <%= quote.ispublic? ? 'public' : 'private' %>">
+                  <%= quote.ispublic? ? "Public" : "Private" %>
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <p class="empty-state">No public quotes found in this category.</p>
+    <% end %>
+  </section>
+<% end %>

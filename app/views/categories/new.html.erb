@@ -1,0 +1,18 @@
+<div class="form-page">
+  <h1>Add Category</h1>
+  <%= form_with model: @category, class: "form-card" do |f| %>
+    <% if @category.errors.any? %>
+      <div class="error-box">
+        <ul><% @category.errors.full_messages.each do |msg| %><li><%= msg %></li><% end %></ul>
+      </div>
+    <% end %>
+    <div class="form-group">
+      <%= f.label :catname, "Category Name" %>
+      <%= f.text_field :catname, class: "form-control", required: true, placeholder: "e.g. Ethics, Logic, Metaphysics" %>
+    </div>
+    <div class="form-actions">
+      <%= f.submit "Add Category", class: "btn btn-primary" %>
+      <%= link_to "Cancel", categories_path, class: "btn btn-link" %>
+    </div>
+  <% end %>
+</div>

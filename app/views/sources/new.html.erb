@@ -1,0 +1,35 @@
+<div class="form-page">
+  <h1>Add New Source</h1>
+  <p class="form-hint">Add a philosopher or thinker to whom quotes can be attributed. Use "Anonymous" for unknown sources.</p>
+  <%= form_with model: @source, class: "form-card" do |f| %>
+    <% if @source.errors.any? %>
+      <div class="error-box">
+        <ul><% @source.errors.full_messages.each do |msg| %><li><%= msg %></li><% end %></ul>
+      </div>
+    <% end %>
+    <div class="form-group">
+      <%= f.label :fname, "First Name" %> <small>(required — use 'Anonymous' if unknown)</small>
+      <%= f.text_field :fname, class: "form-control", required: true %>
+    </div>
+    <div class="form-group">
+      <%= f.label :lname, "Last Name (optional)" %>
+      <%= f.text_field :lname, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label :byear, "Birth Year (optional)" %>
+      <%= f.text_field :byear, class: "form-control", placeholder: "e.g. 470 BCE" %>
+    </div>
+    <div class="form-group">
+      <%= f.label :dyear, "Death Year (optional)" %>
+      <%= f.text_field :dyear, class: "form-control", placeholder: "e.g. 399 BCE" %>
+    </div>
+    <div class="form-group">
+      <%= f.label :bio, "Short Biography (optional)" %>
+      <%= f.text_area :bio, class: "form-control", rows: 4 %>
+    </div>
+    <div class="form-actions">
+      <%= f.submit "Add Source", class: "btn btn-primary" %>
+      <%= link_to "Cancel", sources_path, class: "btn btn-link" %>
+    </div>
+  <% end %>
+</div>

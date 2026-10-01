@@ -1,0 +1,28 @@
+<div class="page-header">
+  <h1>Categories</h1>
+  <% if logged_in? %>
+    <%= link_to "Add Category", new_category_path, class: "btn btn-primary" %>
+  <% end %>
+</div>
+
+<% if @categories.any? %>
+  <div class="categories-grid">
+    <% @categories.each do |cat| %>
+      <div class="category-card">
+        <h3><%= link_to cat.catname, category_path(cat) %></h3>
+        <p><%= cat.quotes.public_quotes.count %> public quote(s)</p>
+        <div class="card-actions">
+          <%= link_to "Browse", search_path(category_id: cat.id), class: "btn btn-sm" %>
+          <% if logged_in? %>
+            <%= link_to "Edit", edit_category_path(cat), class: "btn btn-sm btn-secondary" %>
+            <% if admin_user? %>
+              <%= link_to "Delete", category_path(cat), data: { turbo_method: :delete, turbo_confirm: "Delete '#{cat.catname}'?" }, class: "btn btn-sm btn-danger" %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <p class="empty-state">No categories yet.</p>
+<% end %>

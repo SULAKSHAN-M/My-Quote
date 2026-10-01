@@ -1,0 +1,19 @@
+<h1>Category: <%= @category.catname %></h1>
+
+<% if @quotes.any? %>
+  <% @quotes.each do |quote| %>
+    <div class="card quote-card">
+      <p class="quote-text"><%= quote.qtext %></p>
+      <div class="quote-meta">
+        <span>&#8212; <%= quote.source.full_name %> <%= quote.source.life_years %></span>
+        <% if quote.qyear.present? %><span>Published: <%= quote.qyear %></span><% end %>
+        <span>Added by <strong><%= quote.user.fname %></strong></span>
+      </div>
+      <%= link_to "View", quote, class: "btn btn-sm btn-secondary", style: "margin-top:0.5rem;display:inline-block;" %>
+    </div>
+  <% end %>
+<% else %>
+  <div class="card"><p style="font-family:Arial,sans-serif;color:#888;">No public quotes in this category yet.</p></div>
+<% end %>
+
+<%= link_to "&larr; All Categories".html_safe, categories_path, class: "btn btn-secondary", style: "margin-top:0.5rem;display:inline-block;" %>

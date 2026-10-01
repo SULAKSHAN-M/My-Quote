@@ -1,0 +1,46 @@
+<div class="page-header">
+  <h1><%= admin_user? ? "All Quotes" : "My Quotes" %></h1>
+  <% if logged_in? %>
+    <%= link_to "Add New Quote", new_quote_path, class: "btn btn-primary" %>
+  <% end %>
+</div>
+
+<% if @quotes.any? %>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Quote</th><th>Source</th><th>Categories</th>
+        <% if admin_user? %><th>Owner</th><% end %>
+        <th>Visibility</th><th>Added</th><th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @quotes.each do |quote| %>
+        <tr>
+          <td class="quote-excerpt"><%= truncate(quote.qtext, length: 70) %></td>
+          <td><%= quote.source.full_name %></td>
+          <td><%= quote.categories.map(&:catname).join(", ") %></td>
+          <% if admin_user? %><td><%= quote.user.full_name %></td><% end %>
+          <td><span class="visibility-badge <%= quote.ispublic? ? 'public' : 'private' %>"><%= quote.ispublic? ? "Public" : "Private" %></span></td>
+          <td><%= quote.created_at.strftime("%d %b %Y") %></td>
+        <td class="actions">
+          <%= link_to "View", quote_path(quote), class: "btn btn-sm" %>
+
+          <% if current_user == quote.user || admin_user? %>
+
+            <%= link_to "Edit", edit_quote_path(quote), class: "btn btn-sm btn-secondary" %>
+
+            <%= form_with url: quote_path(quote), method: :delete, local: true, style: "display:inline;" do %>
+              <%= submit_tag "Delete", class: "btn btn-sm btn-danger", onclick: "return confirm('Delete this quote?')" %>
+            <% end %>
+
+          <% end %>
+        </td>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p class="empty-state">No quotes found. <%= link_to "Add one!", new_quote_path %></p>
+<% end %>

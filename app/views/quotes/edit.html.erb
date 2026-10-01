@@ -1,0 +1,59 @@
+<div class="form-page form-page-wide">
+  <h1>Edit Quote</h1>
+  <%= form_with model: @quote, class: "form-card" do |f| %>
+    <% if @quote.errors.any? %>
+      <div class="error-box">
+        <ul><% @quote.errors.full_messages.each do |msg| %><li><%= msg %></li><% end %></ul>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= f.label :qtext, "Quote Text" %>
+      <%= f.text_area :qtext, class: "form-control", rows: 5, required: true %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :source_id, "Source (Philosopher)" %>
+      <%= f.select :source_id,
+            options_from_collection_for_select(@sources, :id, :full_name, @quote.source_id),
+            { prompt: "-- Select a source --" }, { class: "form-control", required: true } %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :qyear, "Publication Year (optional)" %>
+      <%= f.text_field :qyear, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :qcom, "Your Comment (optional)" %>
+      <%= f.text_area :qcom, class: "form-control", rows: 3 %>
+    </div>
+
+    <div class="form-group">
+      <label>Categories <span class="required">*</span></label>
+      <div class="checkbox-grid">
+        <% @categories.each do |cat| %>
+          <label class="checkbox-label">
+            <%= check_box_tag "category_ids[]", cat.id,
+                  @quote.categories.include?(cat),
+                  id: "cat_#{cat.id}" %>
+            <%= cat.catname %>
+          </label>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :ispublic, "Visibility" %>
+      <div class="radio-group">
+        <label><%= f.radio_button :ispublic, true %> Public</label>
+        <label><%= f.radio_button :ispublic, false %> Private</label>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit "Save Changes", class: "btn btn-primary" %>
+      <%= link_to "Cancel", quote_path(@quote), class: "btn btn-link" %>
+    </div>
+  <% end %>
+</div>

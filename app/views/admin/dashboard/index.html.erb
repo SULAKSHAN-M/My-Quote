@@ -1,0 +1,45 @@
+<div class="page-header">
+  <h1>Admin Dashboard</h1>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <span class="stat-number"><%= @total_users %></span>
+    <span class="stat-label">Total Users</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-number"><%= @total_quotes %></span>
+    <span class="stat-label">Total Quotes</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-number"><%= @total_sources %></span>
+    <span class="stat-label">Sources</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-number"><%= @total_categories %></span>
+    <span class="stat-label">Categories</span>
+  </div>
+</div>
+
+<div class="admin-sections">
+  <div class="admin-section-card">
+    <h2>User Management</h2>
+    <p>Manage user accounts, change statuses, and control admin privileges.</p>
+    <%= link_to "Manage Users", admin_users_path, class: "btn btn-primary" %>
+  </div>
+  <div class="admin-section-card">
+    <h2>Categories</h2>
+    <p>Add, edit and remove quote categories.</p>
+    <%= link_to "Manage Categories", categories_path, class: "btn btn-primary" %>
+  </div>
+  <div class="admin-section-card">
+    <h2>Sources</h2>
+    <p>Manage philosophical sources and authors.</p>
+    <%= link_to "Manage Sources", sources_path, class: "btn btn-primary" %>
+  </div>
+  <div class="admin-section-card">
+    <h2>All Quotes</h2>
+    <p>View and manage all quotes in the system.</p>
+    <%= link_to "View All Quotes", quotes_path, class: "btn btn-primary" %>
+  </div>
+</div>

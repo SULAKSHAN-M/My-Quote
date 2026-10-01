@@ -1,0 +1,38 @@
+<div class="source-show">
+  <div class="source-profile">
+    <h1><%= @source.full_name %></h1>
+    <% if @source.byear.present? || @source.dyear.present? %>
+      <p class="source-years"><%= @source.life_years %></p>
+    <% end %>
+    <% if @source.bio.present? %>
+      <div class="source-bio"><%= @source.bio %></div>
+    <% end %>
+    <div class="page-actions">
+      <% if logged_in? %>
+        <%= link_to "Edit", edit_source_path(@source), class: "btn btn-secondary" %>
+        <% if admin_user? %>
+          <%= link_to "Delete", source_path(@source), data: { turbo_method: :delete, turbo_confirm: "Delete this source?" }, class: "btn btn-danger" %>
+        <% end %>
+      <% end %>
+      <%= link_to "Back to Sources", sources_path, class: "btn btn-link" %>
+    </div>
+  </div>
+
+  <section class="source-quotes">
+    <h2>Quotes by <%= @source.full_name %> (<%= @quotes.count %>)</h2>
+    <% if @quotes.any? %>
+      <% @quotes.each do |quote| %>
+        <div class="quote-card">
+          <blockquote class="quote-text">"<%= quote.qtext %>"</blockquote>
+          <div class="quote-meta">
+            <% if quote.qyear.present? %><span>(<%= quote.qyear %>)</span><% end %>
+            <span>Collected by <%= quote.user.fname %></span>
+          </div>
+          <%= link_to "View", quote_path(quote), class: "btn btn-sm" %>
+        </div>
+      <% end %>
+    <% else %>
+      <p class="empty-state">No quotes attributed to this source yet.</p>
+    <% end %>
+  </section>
+</div>

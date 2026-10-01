@@ -1,0 +1,62 @@
+<div class="page-hero">
+  <h1>Welcome to MyQuote</h1>
+  <p class="hero-subtitle">Collect, share and explore philosophical wisdom from across the ages.</p>
+  <div class="hero-actions">
+    <%= link_to "Browse by Category", search_path, class: "btn btn-primary" %>
+    <% unless logged_in? %>
+      <%= link_to "Create an Account", signup_path, class: "btn btn-secondary" %>
+    <% end %>
+  </div>
+</div>
+
+<section class="home-search">
+  <h2>Search by Category</h2>
+  <%= form_tag search_path, method: :get, class: "search-form" do %>
+    <%= select_tag :category_id,
+          options_from_collection_for_select(@categories, :id, :catname, params[:category_id]),
+          prompt: "-- Select a category --", class: "form-control" %>
+    <%= submit_tag "Search", class: "btn btn-primary" %>
+  <% end %>
+</section>
+
+<section class="recent-quotes">
+  <h2>Recently Added Quotes</h2>
+  <% if @recent_quotes.any? %>
+    <% @recent_quotes.each do |quote| %>
+      <div class="quote-card">
+        <blockquote class="quote-text">"<%= quote.qtext %>"</blockquote>
+        <div class="quote-meta">
+          <span class="quote-source">
+            &mdash; <%= quote.source.full_name %>
+            <%= quote.source.life_years %>
+            <% if quote.qyear.present? %> (<%= quote.qyear %>)<% end %>
+          </span>
+          <span class="quote-collector">Collected by <%= quote.user.fname %></span>
+        </div>
+        <% if quote.qcom.present? %>
+          <div class="quote-comment"><em>Note: <%= quote.qcom %></em></div>
+        <% end %>
+        <div class="quote-categories">
+          <% quote.categories.each do |cat| %>
+            <%= link_to cat.catname, search_path(category_id: cat.id), class: "cat-badge" %>
+          <% end %>
+        <div class="card-meta-row">
+          <span class="card-meta-item">
+            <strong>Date Added:</strong> <%= quote.created_at.strftime("%d %B %Y") %>
+          </span>
+          <span class="card-meta-item">
+            <strong>Visibility:</strong>
+            <span class="visibility-badge <%= quote.ispublic? ? 'public' : 'private' %>">
+              <%= quote.ispublic? ? "Public" : "Private" %>
+            </span>
+          </span>
+        </div>
+
+        </div>
+        <%= link_to "View", quote_path(quote), class: "btn btn-sm" %>
+      </div>
+    <% end %>
+  <% else %>
+    <p class="empty-state">No public quotes yet. <%= link_to "Be the first to add one!", new_quote_path %></p>
+  <% end %>
+</section>

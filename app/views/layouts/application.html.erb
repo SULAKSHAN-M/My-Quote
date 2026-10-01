@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MyQuote</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+
+      <div class="nav-brand">
+        <%= link_to "MyQuote",
+            root_path,
+            class: "brand-link" %>
+      </div>
+
+      <div class="nav-links">
+
+        <%= link_to "Home",
+            root_path %>
+
+        <%= link_to "Search",
+            search_path %>
+
+        <%= link_to "Sources",
+            sources_path %>
+
+        <% if logged_in? %>
+
+          <%= link_to "My Quotes",
+              quotes_path %>
+
+          <%= link_to "Add Quote",
+              new_quote_path %>
+
+          <%= link_to "Profile",
+              profile_path %>
+
+          <% if admin_user? %>
+
+            <%= link_to "Admin",
+                admin_dashboard_path,
+                class: "nav-admin" %>
+
+          <% end %>
+
+          <!-- Custom Logout Button -->
+          <button class="nav-logout logout-btn">
+            Log Out
+          </button>
+
+        <% else %>
+
+          <%= link_to "Log In",
+              login_path %>
+
+          <%= link_to "Sign Up",
+              signup_path,
+              class: "nav-signup" %>
+
+        <% end %>
+
+      </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    <div class="flash-messages">
+
+      <% if flash[:notice] %>
+
+        <div class="flash flash-notice">
+          <%= flash[:notice] %>
+        </div>
+
+      <% end %>
+
+      <% if flash[:alert] %>
+
+        <div class="flash flash-alert">
+          <%= flash[:alert] %>
+        </div>
+
+      <% end %>
+
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <%= yield %>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+
+      <div class="footer-content">
+
+        <p>
+          &copy; <%= Date.today.year %>
+          MyQuote &mdash; Collect &amp; Share Philosophical Wisdom
+        </p>
+
+        <p class="footer-credit">
+          Developed by: <strong>SULAKSHAN M.</strong>
+          for Edith Cowan University Sri Lanka
+        </p>
+
+      </div>
+
+    </footer>
+
+    <!-- Logout Confirmation Modal -->
+    <div id="logoutModal" class="logout-modal">
+
+      <div class="logout-modal-content">
+
+        <h2>Confirm Logout</h2>
+
+        <p>Are you sure you want to log out?</p>
+
+        <div class="logout-modal-actions">
+
+          <button id="cancelLogout"
+              class="modal-btn cancel-btn">
+            Cancel
+          </button>
+
+          <%= button_to "Log Out",
+              logout_path,
+              method: :delete,
+              class: "modal-btn confirm-btn" %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+
+        const logoutButton = document.querySelector(".logout-btn");
+        const logoutModal = document.getElementById("logoutModal");
+        const cancelLogout = document.getElementById("cancelLogout");
+
+        logoutButton.addEventListener("click", function (e) {
+          e.preventDefault();
+          logoutModal.style.display = "flex";
+        });
+
+        cancelLogout.addEventListener("click", function () {
+          logoutModal.style.display = "none";
+        });
+
+        window.addEventListener("click", function (e) {
+          if (e.target === logoutModal) {
+            logoutModal.style.display = "none";
+          }
+        });
+
+      });
+    </script>
+
+  </body>
+</html>
