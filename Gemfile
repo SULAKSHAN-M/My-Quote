@@ -7,7 +7,7 @@ gem "rails", "~> 8.0.5"
 gem "propshaft"
 
 # Added for compatibility with older asset helpers
-gem "sprockets-rails"
+
 
 # Use sqlite3 as the database for Active Record
 gem "sqlite3", ">= 2.1"
